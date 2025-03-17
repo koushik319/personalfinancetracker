@@ -1,4 +1,4 @@
-.expense-card-container {
+.expense-card-container1 {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -6,7 +6,7 @@
     background-color: #f8f9fa; /* Light background */
   }
   
-  .expense-card {
+  .expense-card1 {
     background: #ffffff;
     width: 350px;
     padding: 20px;
@@ -15,46 +15,47 @@
     text-align: center;
   }
   
-  .expense-card h2 {
+  .expense-card1 h2 {
     margin-bottom: 15px;
     font-size: 22px;
     color: #333;
   }
   
-  .expense-form {
+  .expense-form1 {
     display: flex;
     flex-direction: column;
     gap: px;
   }
   
-  .expense-group {
+  .expense-group1 {
     display: flex;
     flex-direction: column;
     text-align: left;
   }
   
-  .expense-group label {
+  .expense-group1 label {
     font-size: 14px;
     margin-bottom: 5px;
     font-weight: bold;
     color: #555;
   }
   
-  .expense-input, .expense-select {
+  .expense-input1, .expense-select1 {
     width: 100%;
     padding: 10px;
     border-radius: 6px;
     border: 1px solid #ccc;
     font-size: 14px;
     transition: border 0.3s ease-in-out;
+    
   }
   
-  .expense-input:focus, .expense-select:focus {
+  .expense-input1:focus, .expense-select1:focus {
     border: 1px solid #007bff;
     outline: none;
   }
   
-  .expense-btn {
+  .expense-btn1 {
     background-color: #007bff;
     color: white;
     border: none;
@@ -65,7 +66,7 @@
     transition: background 0.3s;
   }
   
-  .expense-btn:hover {
+  .expense-btn1:hover {
     background-color: #0056b3;
   }
   

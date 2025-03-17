@@ -66,45 +66,16 @@ const DashBoard = () => {
             {/* <NavLink className="card-link" to={`/update/${id}`}>
               Update Details
             </NavLink> */}
-            <NavLink className="card-link" to={`/addexpense/${id}`}>
+            <NavLink className="card-link" to={`/expenses`}>
               Add Expense
+            </NavLink>
+            <NavLink className="card-link" to={`/expenselist`}>
+              Expenses List
             </NavLink>
           </div>
         </div>
 
-        <table className="table border shadow mxy-2 mt-2">
-          <thead className="">
-            <tr>
-              <th scope="col">#</th>
-              {/* <th scope="col">ExpenseId</th> */}
-              <th scope="col">Description</th>
-              <th scope="col">Amount</th>
-              
-              <th scope="col"></th>
-              
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {expenses.map((expense, index) => (
-              <tr>
-                <th scope="row">{index + 1}</th>
-                <td scope="row">{expense.description}</td>
-                <td scope="row">{expense.amount}</td>
-                {/* <td scope="row">{expense.experienceYears}</td> */}
-
-                <td scope="row">
-                  <Link
-                    className="btn btn-sm btn-danger"
-                    onClick={() => deleteExpense(expense.ExpenseId)}
-                  >
-                    Delete
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+       
       </div>
     </div>
   );

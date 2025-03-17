@@ -89,23 +89,23 @@ const ExpenseTracker = () => {
   };
 
   return (
-    <div className="expense-card-container">
-      <div className="expense-card">
+    <div className="expense-card-container1">
+      <div className="expense-card1">
         <h2>Add Expense</h2>
 
         {loading && <p>Loading categories...</p>}
 
         {!loading && (
-          <form onSubmit={addExpense} className="expense-form">
+          <form onSubmit={addExpense} className="expense-form1">
             {/* Category Dropdown */}
-            <div className="expense-group">
+            <div className="expense-group1">
               <label htmlFor="CategoryId">Select Category</label>
               <select
                 name="CategoryId"
                 value={expense.CategoryId}
                 onChange={onInputChange}
                 required
-                className="expense-select"
+                className="expense-select1"
               >
                 <option value="">Select Category</option>
                 {categories.map((cat) => (
@@ -117,7 +117,7 @@ const ExpenseTracker = () => {
             </div>
 
             {/* Description Input */}
-            <div className="expense-group">
+            <div className="expense-group1">
               <label htmlFor="Description">Description</label>
               <input
                 type="text"
@@ -126,12 +126,12 @@ const ExpenseTracker = () => {
                 value={expense.Description}
                 onChange={onInputChange}
                 required
-                className="expense-input"
+                className="expense-input1"
               />
             </div>
 
             {/* Amount Input */}
-            <div className="expense-group">
+            <div className="expense-group1">
               <label htmlFor="Amount">Amount</label>
               <input
                 type="number"
@@ -140,12 +140,12 @@ const ExpenseTracker = () => {
                 value={expense.Amount}
                 onChange={onInputChange}
                 required
-                className="expense-input"
+                className="expense-input1"
               />
             </div>
 
             {/* Submit Button */}
-            <button type="submit" className="expense-btn">
+            <button type="submit" className="expense-btn1">
               Add Expense
             </button>
           </form>
