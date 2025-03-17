@@ -1,0 +1,71 @@
+.expense-card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Center vertically */
+    background-color: #f8f9fa; /* Light background */
+  }
+  
+  .expense-card {
+    background: #ffffff;
+    width: 350px;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .expense-card h2 {
+    margin-bottom: 15px;
+    font-size: 22px;
+    color: #333;
+  }
+  
+  .expense-form {
+    display: flex;
+    flex-direction: column;
+    gap: px;
+  }
+  
+  .expense-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+  
+  .expense-group label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .expense-input, .expense-select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    transition: border 0.3s ease-in-out;
+  }
+  
+  .expense-input:focus, .expense-select:focus {
+    border: 1px solid #007bff;
+    outline: none;
+  }
+  
+  .expense-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .expense-btn:hover {
+    background-color: #0056b3;
+  }
+  
