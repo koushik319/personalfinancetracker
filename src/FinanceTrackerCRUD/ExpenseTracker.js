@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; 
 import axios from "axios";
 import "./ExpenseTracker.css"; // Import CSS for styling
 
 const ExpenseTracker = () => {
+  const navigate = useNavigate();
   const UserId = localStorage.getItem("UserId");
   const accessToken = localStorage.getItem("accessToken");
 
@@ -147,6 +149,14 @@ const ExpenseTracker = () => {
             {/* Submit Button */}
             <button type="submit" className="expense-btn1">
               Add Expense
+            </button>
+
+            <button
+              type="button"
+              className="expense-btn1 expense-list-btn"
+              onClick={() => navigate("/expenselist")}
+            >
+              View Expense List
             </button>
           </form>
         )}
