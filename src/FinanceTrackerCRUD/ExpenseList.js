@@ -13,7 +13,8 @@ const ExpenseList = () => {
   const [loading, setLoading] = useState(true);
   const [editingExpense, setEditingExpense] = useState(null);
   const [editForm, setEditForm] = useState({ description: "", amount: "" });
-
+  
+  const [totalPages, setTotalPages] = useState(1); 
   const [filters, setFilters] = useState({
     CategoryId: "",
     Date: "",
@@ -54,10 +55,12 @@ const ExpenseList = () => {
           CategoryId: filters.CategoryId || undefined,
           Date: formattedDate || undefined,
           page: filters.page,
+          limit: 5,
         },
       });
 
       setExpenses(res.data);
+      setTotalPages(res.data.totalPages);
     } catch (err) {
       console.error("Error fetching expenses:", err);
     } finally {
@@ -259,9 +262,28 @@ const ExpenseList = () => {
               ))}
             </tbody>
           </table>
+          
         )}
+        {/* Pagination Controls */}
+        <div className="pagination-controls">
+          <button 
+            disabled={filters.page === 1} 
+            onClick={() => setFilters((prev) => ({ ...prev, page: prev.page - 1 }))}
+          >
+            Previous
+          </button>
+          <span>Page {filters.page} of {totalPages}</span>
+          <button 
+            disabled={filters.page === totalPages} 
+            onClick={() => setFilters((prev) => ({ ...prev, page: prev.page + 1 }))}
+          >
+            Next
+          </button>
+        </div>
       </div>
+        
     </div>
+    
   );
 };
 

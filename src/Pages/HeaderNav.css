@@ -1,0 +1,48 @@
+/* Gradient background for a premium look */
+.custom-navbar {
+    background: linear-gradient(135deg, #4a90e2, #003366);
+    padding: 12px 0;
+  }
+  
+  /* Stylish brand/logo text */
+  .logo-text {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #fff !important;
+    letter-spacing: 1px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .logo-text:hover {
+    color: #f8d210 !important;
+  }
+  
+  /* Navbar links */
+  .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-size: 1rem;
+    font-weight: 500;
+    margin-right: 15px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .navbar-nav .nav-link:hover,
+  .navbar-nav .nav-link.active {
+    color: #f8d210 !important;
+  }
+  
+  /* Custom button styles */
+  .custom-btn {
+    background: linear-gradient(45deg, #f8d210, #ff8c00);
+    color: #222;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 20px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .custom-btn:hover {
+    background: linear-gradient(45deg, #ff8c00, #f8d210);
+    color: #fff;
+  }
+  

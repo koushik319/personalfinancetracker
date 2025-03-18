@@ -1,20 +1,23 @@
 import React from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import "./HeaderNav.css"; // Import custom CSS file
 
 const HeaderNav = () => {
   const navigate = useNavigate();
 
   const SignOut = (e) => {
     e.preventDefault();
-    alert("Signout Successfully");
-    localStorage.clear();
-    navigate("/");
+    if (window.confirm("Are you sure you want to sign out?")) {
+      alert("Signout Successfully");
+      localStorage.clear();
+      navigate("/");
+    }
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <nav className="navbar navbar-expand-lg shadow-sm custom-navbar">
       <div className="container">
-        <NavLink className="navbar-brand fw-bold" to={"/dashboard"}>
+        <NavLink className="navbar-brand fw-bold logo-text" to={"/dashboard"}>
           Finance Tracker
         </NavLink>
 
@@ -33,7 +36,7 @@ const HeaderNav = () => {
         <div className="collapse navbar-collapse" id="mynavbar">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <NavLink className="nav-link active" to="/dashboard">
+              <NavLink className="nav-link" to="/dashboard">
                 Home
               </NavLink>
             </li>
@@ -45,18 +48,9 @@ const HeaderNav = () => {
           </ul>
 
           <div className="d-flex">
-            <Link
-              className="btn btn-sm btn-warning me-2 px-4"
-              onClick={SignOut}
-            >
+            <Link className="btn custom-btn me-2" onClick={SignOut}>
               Logout
             </Link>
-            {/* <Link
-              className="btn btn-sm btn-warning px-4"
-              to="/profile"
-            >
-              Profile
-            </Link> */}
           </div>
         </div>
       </div>

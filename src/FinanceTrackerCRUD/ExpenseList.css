@@ -125,3 +125,28 @@
 .go-back-btn:hover {
     background-color: #45a049;
 }
+
+.filters-container {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .filter-label {
+    font-weight: bold;
+    color: black;
+    margin-bottom: 5px;
+  }
+  
+  .filter-select,
+  .filter-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
