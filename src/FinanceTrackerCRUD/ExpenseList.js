@@ -21,35 +21,42 @@ const ExpenseList = () => {
   });
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const res = await axios.get("http://localhost:5122/api/Categories", {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
-        setCategories(res.data);
-      } catch (err) {
-        console.error("Error fetching categories:", err);
-      }
-    };
-
     fetchCategories();
     fetchExpenses();
-  }, [filters, accessToken]);
+  }, [filters]); // Fetch expenses when filters change
+
+  const fetchCategories = async () => {
+    try {
+      const res = await axios.get("http://localhost:5122/api/Categories", {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      setCategories(res.data);
+    } catch (err) {
+      console.error("Error fetching categories:", err);
+    }
+  };
 
   const fetchExpenses = async () => {
+    if (!UserId) {
+      console.error("UserId is missing. Please log in.");
+      return;
+    }
+
     try {
       const formattedDate = filters.Date
         ? new Date(filters.Date).toISOString().split("T")[0]
         : "";
+
       const res = await axios.get("http://localhost:5122/api/Expenses", {
         headers: { Authorization: `Bearer ${accessToken}` },
         params: {
           UserId,
-          CategoryId: filters.CategoryId,
-          Date: formattedDate,
+          CategoryId: filters.CategoryId || undefined,
+          Date: formattedDate || undefined,
           page: filters.page,
         },
       });
+
       setExpenses(res.data);
     } catch (err) {
       console.error("Error fetching expenses:", err);
@@ -113,6 +120,45 @@ const ExpenseList = () => {
       <div className="expense-card">
         <h2>Expense List</h2>
 
+        {/* Filters Section */}
+        <div className="filters-container">
+          <div className="filter-group">
+            <label htmlFor="CategoryId" className="filter-label">
+              Filter by Category:
+            </label>
+            <select
+              name="CategoryId"
+              value={filters.CategoryId}
+              onChange={(e) =>
+                setFilters((prev) => ({ ...prev, CategoryId: e.target.value }))
+              }
+              className="filter-select"
+            >
+              <option value="">All Categories</option>
+              {categories.map((cat) => (
+                <option key={cat.categoryId} value={cat.categoryId}>
+                  {cat.categoryName}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="filter-group">
+            <label htmlFor="Date" className="filter-label">
+              Filter by Date:
+            </label>
+            <input
+              type="date"
+              name="Date"
+              value={filters.Date}
+              onChange={(e) =>
+                setFilters((prev) => ({ ...prev, Date: e.target.value }))
+              }
+              className="filter-input"
+            />
+          </div>
+        </div>
+
         {loading && <p>Loading expenses...</p>}
 
         {!loading && expenses.length === 0 && (
@@ -122,57 +168,56 @@ const ExpenseList = () => {
               className="go-back-btn"
               onClick={() => setFilters({ CategoryId: "", Date: "", page: 1 })}
             >
-              Go Back to Expense List
+              Reset Filters
             </button>
           </div>
         )}
 
         {!loading && expenses.length > 0 && (
-          <>
-            <table className="expense-table">
-              <thead>
-                <tr>
-                  <th>ExpenseId</th>
-                  <th>UserId</th>
-                  <th>CategoryId</th>
-                  <th>Description</th>
-                  <th>Amount</th>
-                  <th>Date</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {expenses.map((expense) => (
-                  <tr key={expense.expenseId}>
-                    <td>{expense.expenseId}</td>
-                    <td>{expense.userId}</td>
-                    <td>{expense.categoryId || "N/A"}</td>
-                    <td>
-                      {editingExpense?.expenseId === expense.expenseId ? (
-                        <input
-                          type="text"
-                          name="description"
-                          value={editForm.description}
-                          onChange={handleEditChange}
-                        />
-                      ) : (
-                        expense.description
-                      )}
-                    </td>
-                    <td>
-                      {editingExpense?.expenseId === expense.expenseId ? (
-                        <input
-                          type="number"
-                          name="amount"
-                          value={editForm.amount}
-                          onChange={handleEditChange}
-                        />
-                      ) : (
-                        expense.amount
-                      )}
-                    </td>
-                    <td>{new Date(expense.date).toLocaleString()}</td>
-                    <td>
+          <table className="expense-table">
+            <thead>
+              <tr>
+                <th>ExpenseId</th>
+                <th>UserId</th>
+                <th>CategoryId</th>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {expenses.map((expense) => (
+                <tr key={expense.expenseId}>
+                  <td>{expense.expenseId}</td>
+                  <td>{expense.userId}</td>
+                  <td>{expense.categoryId || "N/A"}</td>
+                  <td>
+                    {editingExpense?.expenseId === expense.expenseId ? (
+                      <input
+                        type="text"
+                        name="description"
+                        value={editForm.description}
+                        onChange={handleEditChange}
+                      />
+                    ) : (
+                      expense.description
+                    )}
+                  </td>
+                  <td>
+                    {editingExpense?.expenseId === expense.expenseId ? (
+                      <input
+                        type="number"
+                        name="amount"
+                        value={editForm.amount}
+                        onChange={handleEditChange}
+                      />
+                    ) : (
+                      expense.amount
+                    )}
+                  </td>
+                  <td>{new Date(expense.date).toLocaleString()}</td>
+                  <td>
                       {editingExpense?.expenseId === expense.expenseId ? (
                         <>
                           <button onClick={saveEdit}>Save</button>
@@ -210,11 +255,10 @@ const ExpenseList = () => {
                         </div>
                       )}
                     </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         )}
       </div>
     </div>
