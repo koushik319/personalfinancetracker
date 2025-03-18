@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./ExpenseList.css";
 
 const ExpenseList = () => {
+  const navigate = useNavigate();
   const UserId = localStorage.getItem("UserId");
   const accessToken = localStorage.getItem("accessToken");
 
@@ -177,12 +179,35 @@ const ExpenseList = () => {
                           <button onClick={cancelEdit}>Cancel</button>
                         </>
                       ) : (
-                        <>
-                          <button onClick={() => startEditing(expense)}>Edit</button>
-                          <button onClick={() => deleteExpense(expense.expenseId)}>
+                        <div className="d-flex gap-2">
+                          <button
+                            type="button"
+                            className="btn btn-primary"
+                            onClick={() => navigate("/expenses")}
+                          >
+                            Add
+                          </button>
+                          <button
+                            className="btn btn-warning"
+                            onClick={() => startEditing(expense)}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="btn btn-danger"
+                            onClick={() => {
+                              if (
+                                window.confirm(
+                                  "Are you sure you want to delete this expense?"
+                                )
+                              ) {
+                                deleteExpense(expense.expenseId);
+                              }
+                            }}
+                          >
                             Delete
                           </button>
-                        </>
+                        </div>
                       )}
                     </td>
                   </tr>
