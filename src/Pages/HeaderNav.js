@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 
 const HeaderNav = () => {
   const navigate = useNavigate();
+
   const SignOut = (e) => {
     e.preventDefault();
     alert("Signout Successfully");
@@ -12,7 +13,7 @@ const HeaderNav = () => {
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
-      <div className="container-fluid">
+      <div className="container">
         <NavLink className="navbar-brand fw-bold" to={"/dashboard"}>
           Finance Tracker
         </NavLink>
@@ -22,39 +23,41 @@ const HeaderNav = () => {
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#mynavbar"
+          aria-controls="mynavbar"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon"></span>
         </button>
 
         <div className="collapse navbar-collapse" id="mynavbar">
-          <ul className="navbar-nav me-auto">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a className="nav-link active" href="#">
+              <NavLink className="nav-link active" to="/dashboard">
                 Home
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <NavLink className="nav-link" to="/about">
                 About
-              </a>
-            </li>
-            <li className="nav-item">
-              <Link className="btn btn-sm btn-danger ms-2" onClick={SignOut}>
-                Logout
-              </Link>
+              </NavLink>
             </li>
           </ul>
 
-          {/* <form className="d-flex">
-            <input
-              className="form-control me-2 rounded-pill"
-              type="text"
-              placeholder="Search"
-            />
-            <button className="btn btn-outline-light rounded-pill" type="button">
-              Search
-            </button>
-          </form> */}
+          <div className="d-flex">
+            <Link
+              className="btn btn-sm btn-warning me-2 px-4"
+              onClick={SignOut}
+            >
+              Logout
+            </Link>
+            {/* <Link
+              className="btn btn-sm btn-warning px-4"
+              to="/profile"
+            >
+              Profile
+            </Link> */}
+          </div>
         </div>
       </div>
     </nav>
