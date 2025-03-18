@@ -9,6 +9,8 @@ const ExpenseList = () => {
   const [expenses, setExpenses] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [editingExpense, setEditingExpense] = useState(null);
+  const [editForm, setEditForm] = useState({ description: "", amount: "" });
 
   const [filters, setFilters] = useState({
     CategoryId: "",
@@ -17,30 +19,27 @@ const ExpenseList = () => {
   });
 
   useEffect(() => {
-    axios
-      .get("http://localhost:5122/api/Categories", {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
-      .then((res) => setCategories(res.data))
-      .catch((err) => console.error("Error fetching categories:", err));
+    const fetchCategories = async () => {
+      try {
+        const res = await axios.get("http://localhost:5122/api/Categories", {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        setCategories(res.data);
+      } catch (err) {
+        console.error("Error fetching categories:", err);
+      }
+    };
 
+    fetchCategories();
     fetchExpenses();
   }, [filters, accessToken]);
 
-  const fetchExpenses = () => {
-    const formattedDate = filters.Date
-      ? new Date(filters.Date).toISOString().split("T")[0]
-      : "";
-
-    console.log("Fetching Expenses with:", {
-      UserId,
-      CategoryId: filters.CategoryId,
-      Date: formattedDate,
-      page: filters.page,
-    });
-
-    axios
-      .get("http://localhost:5122/api/Expenses", {
+  const fetchExpenses = async () => {
+    try {
+      const formattedDate = filters.Date
+        ? new Date(filters.Date).toISOString().split("T")[0]
+        : "";
+      const res = await axios.get("http://localhost:5122/api/Expenses", {
         headers: { Authorization: `Bearer ${accessToken}` },
         params: {
           UserId,
@@ -48,30 +47,64 @@ const ExpenseList = () => {
           Date: formattedDate,
           page: filters.page,
         },
-      })
-      .then((res) => {
-        console.log("API Response Data:", res.data);
-        setExpenses(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching expenses:", err);
-        setLoading(false);
       });
+      setExpenses(res.data);
+    } catch (err) {
+      console.error("Error fetching expenses:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const onFilterChange = (e) => {
-    setFilters({ ...filters, [e.target.name]: e.target.value });
+  const deleteExpense = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5122/api/Expenses/${id}`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      fetchExpenses();
+    } catch (err) {
+      console.error("Error deleting expense:", err);
+    }
   };
 
-  const nextPage = () => setFilters({ ...filters, page: filters.page + 1 });
-  const prevPage = () =>
-    setFilters({ ...filters, page: Math.max(1, filters.page - 1) });
+  const startEditing = (expense) => {
+    setEditingExpense(expense);
+    setEditForm({ description: expense.description, amount: expense.amount });
+  };
 
-  const totalAmount = expenses.reduce(
-    (sum, expense) => sum + (expense.amount || 0),
-    0
-  );
+  const handleEditChange = (e) => {
+    setEditForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const saveEdit = async () => {
+    try {
+      if (!accessToken || !editingExpense?.expenseId) return;
+
+      const updatedExpense = {
+        expenseId: editingExpense.expenseId,
+        userId: editingExpense.userId,
+        categoryId: editingExpense.categoryId,
+        description: editForm.description,
+        amount: parseFloat(editForm.amount),
+        date: editingExpense.date,
+      };
+
+      await axios.put(
+        `http://localhost:5122/api/Expenses/${editingExpense.expenseId}`,
+        updatedExpense,
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      );
+
+      setEditingExpense(null);
+      fetchExpenses();
+    } catch (err) {
+      console.error("Error updating expense:", err);
+    }
+  };
+
+  const cancelEdit = () => {
+    setEditingExpense(null);
+  };
 
   return (
     <div className="expense-container">
@@ -94,32 +127,6 @@ const ExpenseList = () => {
 
         {!loading && expenses.length > 0 && (
           <>
-            <div className="expense-filter">
-              <label htmlFor="CategoryId">Filter by Category:</label>
-              <select
-                name="CategoryId"
-                value={filters.CategoryId}
-                onChange={onFilterChange}
-                className="expense-select"
-              >
-                <option value="">All Categories</option>
-                {categories.map((cat) => (
-                  <option key={cat.categoryId} value={cat.categoryId}>
-                    {cat.categoryName}
-                  </option>
-                ))}
-              </select>
-
-              <label htmlFor="Date">Filter by Date:</label>
-              <input
-                type="date"
-                name="Date"
-                value={filters.Date}
-                onChange={onFilterChange}
-                className="expense-input"
-              />
-            </div>
-
             <table className="expense-table">
               <thead>
                 <tr>
@@ -129,6 +136,7 @@ const ExpenseList = () => {
                   <th>Description</th>
                   <th>Amount</th>
                   <th>Date</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -137,31 +145,50 @@ const ExpenseList = () => {
                     <td>{expense.expenseId}</td>
                     <td>{expense.userId}</td>
                     <td>{expense.categoryId || "N/A"}</td>
-                    <td>{expense.description}</td>
-                    <td>{expense.amount}</td>
+                    <td>
+                      {editingExpense?.expenseId === expense.expenseId ? (
+                        <input
+                          type="text"
+                          name="description"
+                          value={editForm.description}
+                          onChange={handleEditChange}
+                        />
+                      ) : (
+                        expense.description
+                      )}
+                    </td>
+                    <td>
+                      {editingExpense?.expenseId === expense.expenseId ? (
+                        <input
+                          type="number"
+                          name="amount"
+                          value={editForm.amount}
+                          onChange={handleEditChange}
+                        />
+                      ) : (
+                        expense.amount
+                      )}
+                    </td>
                     <td>{new Date(expense.date).toLocaleString()}</td>
+                    <td>
+                      {editingExpense?.expenseId === expense.expenseId ? (
+                        <>
+                          <button onClick={saveEdit}>Save</button>
+                          <button onClick={cancelEdit}>Cancel</button>
+                        </>
+                      ) : (
+                        <>
+                          <button onClick={() => startEditing(expense)}>Edit</button>
+                          <button onClick={() => deleteExpense(expense.expenseId)}>
+                            Delete
+                          </button>
+                        </>
+                      )}
+                    </td>
                   </tr>
                 ))}
-                <tr>
-                  <td
-                    colSpan="4"
-                    style={{ textAlign: "right", fontWeight: "bold" }}
-                  >
-                    Total Amount:
-                  </td>
-                  <td style={{ fontWeight: "bold" }}>{totalAmount}</td>
-                  <td></td>
-                </tr>
               </tbody>
             </table>
-
-            <div className="pagination-controls">
-              <button onClick={prevPage} disabled={filters.page === 1}>
-                Previous
-              </button>
-              <span>Page {filters.page}</span>
-              <button onClick={nextPage}>Next</button>
-            </div>
           </>
         )}
       </div>
