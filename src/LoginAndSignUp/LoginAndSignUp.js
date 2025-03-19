@@ -29,7 +29,7 @@ const LoginAndSignUp = () => {
   const onLogin = async (e) => {
     e.preventDefault();
     try {
-      //http://localhost:5226/api/users
+      
       const response = await axios.post("http://localhost:5122/api/FinanceApi/PostLoginDetails",
         {
           emailId,
@@ -37,14 +37,9 @@ const LoginAndSignUp = () => {
       });
       console.log(response.data);
      
-      //setUsers(response.data);
-      //debugger;
-      // const emp = users.find(
-      //   (e) =>
-      //     e.emailId === user.emailId && e.password === user.password
-      // );
+      
        if (response.data !== undefined) {
-      //   localStorage.setItem("id", response.data.userId);
+      
         alert("Login successfully!!");
         setUser({
           firstName: "",
@@ -119,14 +114,7 @@ const LoginAndSignUp = () => {
               value={phoneNumber}
               onChange={(e) => onInputChange(e)}
             />
-            {/* <input
-              type="text"
-              name="landLine"
-              placeholder="Enter landLine"
-              required
-              value={landLine}
-              onChange={(e) => onInputChange(e)}
-            /> */}
+           
             <input
               type="email"
               name="emailId"

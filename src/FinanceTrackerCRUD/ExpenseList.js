@@ -24,7 +24,7 @@ const ExpenseList = () => {
   useEffect(() => {
     fetchCategories();
     fetchExpenses();
-  }, [filters]); // Fetch expenses when filters change
+  }, [filters]); 
 
   const fetchCategories = async () => {
     try {

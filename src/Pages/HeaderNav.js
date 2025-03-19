@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import "./HeaderNav.css"; // Import custom CSS file
+import "./HeaderNav.css"; 
 
 const HeaderNav = () => {
   const navigate = useNavigate();

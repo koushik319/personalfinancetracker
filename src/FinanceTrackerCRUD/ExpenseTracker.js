@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; 
 import axios from "axios";
-import "./ExpenseTracker.css"; // Import CSS for styling
+import "./ExpenseTracker.css"; 
 
 const ExpenseTracker = () => {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const ExpenseTracker = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch Categories from API
+  
   useEffect(() => {
     axios
       .get("http://localhost:5122/api/Categories", {
@@ -36,12 +36,12 @@ const ExpenseTracker = () => {
       });
   }, [accessToken]);
 
-  // Handle Input Changes
+  
   const onInputChange = (e) => {
     setExpense({ ...expense, [e.target.name]: e.target.value });
   };
 
-  // Submit New Expense
+  
   const addExpense = async (e) => {
     e.preventDefault();
 
@@ -58,7 +58,7 @@ const ExpenseTracker = () => {
     const newExpense = {
       ...expense,
       UserId,
-      Amount: parseFloat(expense.Amount), // Ensure amount is stored as a number
+      Amount: parseFloat(expense.Amount), 
       Date: new Date().toISOString(),
     };
 
@@ -72,7 +72,7 @@ const ExpenseTracker = () => {
       console.log("Expense added successfully:", response.data);
       alert("Expense added successfully!");
 
-      // Reset Form Fields
+      
       setExpense({
         CategoryId: "",
         Description: "",
@@ -99,7 +99,7 @@ const ExpenseTracker = () => {
 
         {!loading && (
           <form onSubmit={addExpense} className="expense-form1">
-            {/* Category Dropdown */}
+          
             <div className="expense-group1">
               <label htmlFor="CategoryId">Select Category</label>
               <select
@@ -118,7 +118,7 @@ const ExpenseTracker = () => {
               </select>
             </div>
 
-            {/* Description Input */}
+            
             <div className="expense-group1">
               <label htmlFor="Description">Description</label>
               <input
@@ -132,7 +132,7 @@ const ExpenseTracker = () => {
               />
             </div>
 
-            {/* Amount Input */}
+          
             <div className="expense-group1">
               <label htmlFor="Amount">Amount</label>
               <input
@@ -146,7 +146,7 @@ const ExpenseTracker = () => {
               />
             </div>
 
-            {/* Submit Button */}
+            
             <button type="submit" className="expense-btn1">
               Add Expense
             </button>
