@@ -5,7 +5,6 @@ import { NavLink } from "react-router-dom";
 const DashBoard = () => {
   const UserId = localStorage.getItem("UserId");
   const accessToken = localStorage.getItem("accessToken");
-  const [expenses, setExpenses] = useState([]);
   const [user, setUser] = useState({
     UserId: "",
     firstName: "",
