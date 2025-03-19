@@ -4,7 +4,7 @@ import axios from "axios";
 import {useNavigate } from "react-router-dom";
 const LoginAndSignUp = () => {
   const [users, setUsers] = useState([]);
-  const [user, setUser] = useState({
+  const [user, setUser] = useState({   
     firstName: "",
     lastName: "",
     phoneNumber: "",                 
