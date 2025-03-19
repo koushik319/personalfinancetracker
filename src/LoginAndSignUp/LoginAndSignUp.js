@@ -8,7 +8,6 @@ const LoginAndSignUp = () => {
     firstName: "",
     lastName: "",
     phoneNumber: "",                 
-
     emailId: "",
     password: "",
   });
