@@ -22,21 +22,6 @@ const DashBoard = () => {
     });
     setUser(result.data);
 
-    const response = await axios.get(`http://localhost:5122/api/Expenses/GetSkillByUserId/${UserId}`, {
-      headers: { Authorization: `Bearer ${accessToken}` }
-    });
-    setExpenses(response.data);
-  };
-
-  const deleteExpense = async (id) => {
-    try {
-      await axios.delete(`http://localhost:5122/api/Expenses/${id}`, {
-        headers: { Authorization: `Bearer ${accessToken}` }
-      });
-      alert("Deleted successfully!");
-    } catch (error) {
-      alert("Delete failed!");
-    }
   };
 
   useEffect(() => {
