@@ -22,7 +22,7 @@ const DashBoard = () => {
     });
     setUser(result.data);
 
-  };
+  }; 
 
   useEffect(() => {
     loadUserDetails();
